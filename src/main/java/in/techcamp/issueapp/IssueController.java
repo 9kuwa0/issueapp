@@ -18,8 +18,14 @@ public class IssueController {
     }
 
     @PostMapping("/issues")
-    public String createIssue(IssueForm issueForm){
-        issueRepository.insert(issueForm.getTitle(), issueForm.getContent(), issueForm.getPeriod(), issueForm.getImportance());
+    public String createIssue(IssueForm issueForm,
+                              Model model){
+        try {
+            issueRepository.insert(issueForm.getTitle(), issueForm.getContent(), issueForm.getPeriod(), issueForm.getImportance());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
         return "redirect:/";
     }
 }
